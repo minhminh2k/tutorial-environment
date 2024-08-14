@@ -7,6 +7,22 @@ volumes:
   app_data: {}
 
 services:
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - grafana
+    ports:
+      - 8080:8080
+    privileged: true
+    devices:
+      - "/dev/kmsg"
+
   node-exporter:
     image: prom/node-exporter:v1.8.1
     command:
